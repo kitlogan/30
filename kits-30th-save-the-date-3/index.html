@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kit’s 30th · Save the date</title>
+<meta name="description" content="Save the date for Kit’s 30th in Verbier &amp; Cabane Mont Fort. Saturday 27 February to Tuesday 2 March 2027.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kit’s 30th: save the date">
+<meta property="og:description" content="Verbier &amp; Cabane Mont Fort, 27 February – 2 March 2027.">
+<meta name="theme-color" content="#f3eee4">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f3eee4'/%3E%3Cpath d='M12 36 32 18l20 18v15H12z' fill='none' stroke='%232e2b33' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M7 37 32 14l25 23' fill='none' stroke='%232e2b33' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='28' y='37' width='8' height='8' fill='%23f0a640'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="media/poster-portrait.jpg" media="(max-aspect-ratio: 1/1)" fetchpriority="high">
+<link rel="preload" as="image" href="media/poster-landscape.jpg" media="(min-aspect-ratio: 1/1)" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2f2b36;
+    --ink-soft: #4d4855;
+    --paper: #f3eee4;
+    --ember: #d9822b;
+    --serif: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --pad: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body {
+    background: var(--paper) url("media/poster-landscape.jpg") center 45% / cover no-repeat;
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+  @media (max-aspect-ratio: 1/1) { body { background-image: url("media/poster-portrait.jpg"); } }
+
+  /* ---- the drawing ---- */
+  .film { position: fixed; inset: 0; }
+  .film video, .film img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 45%;
+    transition: opacity 0.7s ease;
+  }
+  .film .hidden { opacity: 0; }
+  @media (min-aspect-ratio: 17/9) { .film video, .film img { object-position: center 60%; } body { background-position: center 60%; } }
+
+  /* ---- words, which arrive once the drawing has settled ---- */
+  .stage { position: fixed; inset: 0; pointer-events: none; }
+  .hero { position: absolute; left: 0; right: 0; top: max(6%, calc(env(safe-area-inset-top) + 12px)); padding: 0 var(--pad); text-align: center; }
+  .kicker {
+    margin: 0; font-style: italic; letter-spacing: 0.02em;
+    font-size: clamp(1.05rem, 0.9rem + 0.7vw, 1.55rem);
+    opacity: 0; transition: opacity 1.6s ease;
+  }
+  h1 {
+    margin: 0.06em 0 0; font-weight: 400; line-height: 0.95; letter-spacing: -0.012em;
+    font-size: clamp(3.3rem, min(16vw, 13.5svh), 9rem);
+  }
+  /* the title cycles through 2,457m → 1st March 2027 → Kit’s 30th; words wrap whole on narrow screens */
+  h1 .w { display: inline-block; white-space: nowrap; }
+  h1 .l {
+    display: inline-block; white-space: pre;
+    opacity: 0; filter: blur(10px); transform: translateY(0.18em);
+    transition: opacity 1.5s ease, filter 1.8s ease, transform 1.8s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(0.2s + var(--i, 0) * 0.07s);
+  }
+  h1.in .l { opacity: 1; filter: blur(0); transform: none; }
+  h1.out .l {
+    opacity: 0; filter: blur(8px); transform: translateY(-0.12em);
+    transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
+    transition-delay: calc(var(--i, 0) * 0.03s);
+  }
+  .nw { white-space: nowrap; }
+
+  .details {
+    position: relative; isolation: isolate; margin-top: clamp(0.6rem, 2.2svh, 1.4rem);
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 1.4s ease 2s, transform 1.4s ease 2s;
+  }
+  /* a breath of paper behind the text so it stays legible over the drawing */
+  .details::before {
+    content: ""; position: absolute; z-index: -1; left: 50%; top: 50%;
+    width: min(46rem, 120%); height: 150%; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(248, 245, 239, 0.78), rgba(248, 245, 239, 0.45) 55%, rgba(248, 245, 239, 0));
+  }
+  .place { margin: 0; font-size: clamp(1.35rem, 1.1rem + 1.1vw, 2.05rem); line-height: 1.15; }
+  .dates { margin: 0.3em 0 0; line-height: 1.3; font-style: italic; font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem); color: var(--ink-soft); }
+  .fine { margin: 0.8rem 0 0; font-style: italic; font-size: 0.98rem; color: var(--ink-soft); }
+
+  .revealed .kicker { opacity: 1; }
+  .revealed .details { opacity: 1; transform: none; pointer-events: auto; }
+
+  .skip {
+    position: fixed; z-index: 2;
+    top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right));
+    min-height: 40px; display: inline-flex; align-items: center;
+    font: inherit; font-style: italic; font-size: 0.98rem; color: var(--ink);
+    background: rgba(250, 247, 241, 0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border: 0; border-radius: 999px; padding: 0 1.05em; cursor: pointer;
+  }
+  .skip:hover { background: rgba(250, 247, 241, 0.92); }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+
+  /* ---- phones ---- */
+  @media (max-width: 560px) {
+    .details::before { height: 160%; width: 140%; }
+  }
+  @media (max-width: 560px) and (max-height: 700px) { .fine { display: none; } h1 { font-size: clamp(3rem, 15vw, 4rem); } }
+  /* laptops and short landscape windows: keep the words off the drawing */
+  @media (orientation: landscape) and (max-height: 780px) { .details { margin-top: 0.4rem; } .dates { margin-top: 0.15em; } .fine { margin-top: 0.35rem; } }
+  /* phones held sideways */
+  @media (orientation: landscape) and (max-height: 520px) {
+    .hero { top: max(3%, env(safe-area-inset-top)); }
+    .kicker { font-size: 0.95rem; }
+    h1 { font-size: clamp(2.3rem, 14svh, 4.4rem); }
+    .details { margin-top: 0.3rem; }
+    .place { font-size: 1.15rem; }
+    .dates { font-size: 1rem; margin-top: 0.1em; }
+  }
+
+  .no-js body { background-image: url("media/final-landscape.jpg"); }
+  .no-js .kicker, .no-js .details { opacity: 1; filter: none; transform: none; }
+  .no-js .details { pointer-events: auto; }
+  .no-js .skip { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .kicker, h1 .l, .details, .film video, .film img { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="film" aria-hidden="true">
+  <video id="loop" class="hidden" muted playsinline loop preload="none" disablepictureinpicture disableremoteplayback></video>
+  <video id="intro" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback></video>
+  <img id="still" class="hidden" alt="" decoding="async">
+</div>
+
+<main class="stage">
+  <header class="hero">
+    <p class="kicker">Save the date</p>
+    <h1 id="title" aria-label="Kit’s 30th">Kit’s 30th</h1>
+    <section class="details" aria-label="Details">
+      <p class="place">Verbier &amp; Cabane Mont Fort</p>
+      <p class="dates">
+        <time datetime="2027-02-27" class="nw">Saturday 27 February</time> –
+        <time datetime="2027-03-02" class="nw">Tuesday 2 March 2027</time>
+      </p>
+      <p class="fine">Invitation and details to follow.</p>
+    </section>
+  </header>
+</main>
+
+<button class="skip" id="skip" type="button">Skip intro</button>
+
+<script>
+(() => {
+'use strict';
+
+document.documentElement.classList.remove('no-js');
+const body = document.body;
+
+/* ---------- the title sequence, after the drawing settles ---------- */
+const PHRASES = ['2,457m', '1st March 2027', 'Kit’s 30th'];
+const HOLD = 900;            // ms each phrase rests once fully in
+const titleEl = document.getElementById('title');
+let seqTimers = [];
+const later = (fn, ms) => seqTimers.push(setTimeout(fn, ms));
+function clearSeq() { seqTimers.forEach(clearTimeout); seqTimers = []; }
+
+function setPhrase(text, show) {
+  let i = 0;
+  titleEl.className = '';
+  titleEl.innerHTML = text.split(' ').map(word =>
+    `<span class="w" aria-hidden="true">${[...word].map(ch => `<span class="l" style="--i:${i++}">${ch}</span>`).join('')}</span>`
+  ).join(' ');
+  if (show) { void titleEl.offsetWidth; titleEl.classList.add('in'); }
+}
+setPhrase(PHRASES[0], false);
+
+/* ---------- the drawing ---------- */
+const intro = document.getElementById('intro'), loop = document.getElementById('loop'), still = document.getElementById('still');
+const skip = document.getElementById('skip');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveData = !!(navigator.connection && navigator.connection.saveData);
+const T_SETTLED = 10.5;   // the camera has landed and the paint has dried
+const EXT = intro.canPlayType('video/webm; codecs="vp9"') === 'probably' ? 'webm' : 'mp4';
+let orient = '', state = (reduce || saveData) ? 'sequence' : 'intro', seen = false, settled = false;
+
+const loopSrc = () => `media/loop-${orient}.${EXT}`;
+function primeLoop() { if (!loop.src.endsWith(loopSrc())) { loop.src = loopSrc(); loop.preload = 'auto'; loop.load(); } }
+// autoplay can be refused (e.g. iPhone low power mode): show the finished scene instead
+const onPlayFail = e => { if ((!e || e.name !== 'AbortError') && state === 'intro') startSequence(); };
+
+function setSources() {
+  const o = innerHeight > innerWidth ? 'portrait' : 'landscape';
+  if (o === orient) return;
+  orient = o;
+  still.src = `media/final-${o}.jpg`;
+  if (state === 'intro') {
+    const t = intro.currentTime || 0;
+    intro.poster = `media/poster-${o}.jpg`;
+    intro.src = `media/intro-${o}.${EXT}`;
+    try { intro.currentTime = t; } catch (e) {}
+    intro.play().catch(onPlayFail);
+  } else if (!reduce && !saveData) { primeLoop(); loop.play().catch(() => {}); }
+}
+
+function setLabel() { skip.textContent = state !== 'final' ? 'Skip intro' : seen ? 'Watch again' : 'Play the intro'; }
+
+// swap the intro for the loop (or the still), once per play-through
+function settleFilm() {
+  if (settled) return;
+  settled = true;
+  if (reduce || saveData) { still.classList.remove('hidden'); intro.classList.add('hidden'); loop.classList.add('hidden'); return; }
+  primeLoop();
+  try { loop.currentTime = 0; } catch (e) {}
+  loop.play().then(() => { loop.classList.remove('hidden'); intro.classList.add('hidden'); })
+    .catch(() => { still.classList.remove('hidden'); intro.classList.add('hidden'); });
+}
+
+function runPhrase(idx) {
+  const text = PHRASES[idx];
+  setPhrase(text, true);
+  if (idx === PHRASES.length - 1) { state = 'final'; body.classList.add('revealed'); setLabel(); return; }
+  const n = text.replace(/ /g, '').length;
+  const inMs = reduce ? 1800 : 200 + 70 * (n - 1) + 1500 + HOLD;
+  const outMs = reduce ? 0 : 30 * (n - 1) + 700 + 150;
+  later(() => { titleEl.className = 'out'; later(() => runPhrase(idx + 1), outMs); }, inMs);
+}
+
+function startSequence() {
+  clearSeq();
+  state = 'sequence';
+  setLabel();
+  settleFilm();
+  runPhrase(0);
+}
+
+// straight to the finished page (skip button)
+function showFinal() {
+  clearSeq();
+  state = 'final';
+  setPhrase(PHRASES[PHRASES.length - 1], true);
+  body.classList.add('revealed');
+  setLabel();
+  settleFilm();
+}
+function playIntro() {
+  clearSeq();
+  state = 'intro';
+  settled = false;
+  setPhrase(PHRASES[0], false);
+  body.classList.remove('revealed');
+  setLabel();
+  const want = `media/intro-${orient}.${EXT}`;
+  if (!intro.src.endsWith(want)) { intro.poster = `media/poster-${orient}.jpg`; intro.src = want; }
+  intro.classList.remove('hidden');
+  try { intro.currentTime = 0; } catch (e) {}
+  intro.play().then(() => { still.classList.add('hidden'); loop.classList.add('hidden'); loop.pause(); }).catch(onPlayFail);
+}
+
+function tick() {
+  if (state === 'intro') {
+    const t = intro.currentTime;
+    if (t > 5) primeLoop();
+    if (t >= T_SETTLED) { seen = true; startSequence(); }
+  }
+  requestAnimationFrame(tick);
+}
+
+intro.addEventListener('ended', () => { if (state === 'intro') { seen = true; startSequence(); } });
+intro.addEventListener('error', () => { if (state === 'intro') startSequence(); });
+skip.addEventListener('click', () => {
+  if (state === 'intro') { intro.pause(); seen = true; showFinal(); }
+  else if (state === 'sequence') { seen = true; showFinal(); }
+  else playIntro();
+});
+addEventListener('resize', setSources);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && state === 'intro' && intro.paused) intro.play().catch(() => {}); });
+
+setSources();
+if (state === 'sequence') startSequence();
+requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
