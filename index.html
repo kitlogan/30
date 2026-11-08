@@ -667,9 +667,17 @@ const flash = reel.querySelector('.reel-flash');
 const found = {}, loaded = {};
 let reelOn = null, reelFrom = null;
 
-// list the files in a day's folder, once. Locally the preview server lists the folder; on GitHub Pages
-// (which doesn't) we ask GitHub for the folder's contents instead.
-async function listFolder(path) {
+// list the files in a day's folder, once.
+// 1. Locally, the preview server lists the folder (always up to date while editing).
+// 2. On the live site, media/reel/manifest.json lists every day's photos. It is rebuilt
+//    automatically on every commit from this Mac (git pre-commit hook).
+// 3. Last resort: ask GitHub's API (limited to 60 requests an hour per connection).
+let manifest = null;
+function loadManifest() {
+  return manifest || (manifest = fetch('media/reel/manifest.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : null).catch(() => null));
+}
+async function listFolder(path, folder) {
   try {
     const r = await fetch(path, { cache: 'no-cache' });
     if (r.ok && (r.headers.get('content-type') || '').includes('html')) {
@@ -677,6 +685,8 @@ async function listFolder(path) {
       if (names.length) return names;
     }
   } catch (e) {}
+  const m = await loadManifest();
+  if (m && Array.isArray(m[folder])) return m[folder];
   const gh = location.hostname.match(/^([\w-]+)\.github\.io$/);
   if (gh) {
     try {
@@ -690,7 +700,7 @@ async function listFolder(path) {
 function findShots(key) {
   if (found[key]) return found[key];
   const path = `media/reel/${REELS[key].folder}/`;
-  return (found[key] = listFolder(path).then(names => names
+  return (found[key] = listFolder(path, REELS[key].folder).then(names => names
     .filter(n => PHOTO.test(n))
     .sort((x, y) => parseInt(x, 10) - parseInt(y, 10))
     .map(n => path + encodeURIComponent(n))));
