@@ -773,9 +773,10 @@ function checkDays() {
 // Left empty, WhatsApp asks the guest to pick who to send it to.
 const WA_NUMBER = '447747437271';
 const RSVP = {
-  yes: 'So stoked! What incredible pow we\'re going the shred together brah! Count me in!',
+  yes: "So stoked! Can't wait to shred incredible pow together brah! Count me the fuck in!",
   no: 'I\'m completely devastated - nothing in my life will ever make up for me missing this legendary trip. Regrettably, I must decline.',
-  more: 'I\'m not only \'So Stoked\' for the trip, but I also want to throw my hat in the ring for promotion - additional ski days before everyone else arrives. I understand applications will be reviewed on a first come first served basis, and that Kit has the right to discriminate on a \'can do\' attitude to the slopes.'
+  // \n starts a new line in WhatsApp; *stars* make bold
+  more: "I’m not only ‘So Stoked’ for the trip, but I also want to throw my hat in the ring for promotion - *additional ski days before everyone else arrives*.\n\nI understand applications will be reviewed on a first come first served basis, and that Kit has the right to discriminate based on my level of ‘can do’ attitude on the slopes.\n\nI enthusiastically believe I deserve this opportunity."
 };
 const waLink = text => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
 document.querySelectorAll('[data-rsvp]').forEach(a => { a.href = waLink(RSVP[a.dataset.rsvp]); });
