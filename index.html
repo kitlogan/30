@@ -267,6 +267,9 @@
     opacity: 0; translate: 0 0.3em; transition: opacity 0.5s ease, translate 0.6s cubic-bezier(.2,.7,.2,1);
   }
   .attitude.on.say p { opacity: 1; translate: 0 0; }
+  .attitude-inner { display: grid; justify-items: center; gap: 1.6rem; }
+  .attitude .choice { min-width: min(18rem, 80vw); padding: 0 1.6em; opacity: 0; translate: 0 0.6em; pointer-events: none; transition: opacity 0.5s ease, translate 0.6s cubic-bezier(.2,.7,.2,1), background 0.18s ease; }
+  .attitude.go .choice { opacity: 1; translate: 0 0; pointer-events: auto; }
   @media (max-width: 480px) { .card li { grid-template-columns: 1fr; } }
   .deep .skip { z-index: 2; }
 
@@ -436,7 +439,12 @@
   </div>
 </section>
 
-<div class="attitude" id="attitude" aria-live="assertive"><p></p></div>
+<div class="attitude" id="attitude" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="attitude-inner">
+    <p aria-live="assertive"></p>
+    <a class="choice yes" id="egg-send" data-rsvp="more" href="#" target="_blank" rel="noopener">Send it to Kit</a>
+  </div>
+</div>
 
 <div class="reel" id="reel" aria-hidden="true">
   <div class="reel-flash"></div>
@@ -772,15 +780,29 @@ const waLink = text => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(tex
 document.querySelectorAll('[data-rsvp]').forEach(a => { a.href = waLink(RSVP[a.dataset.rsvp]); });
 
 const attitude = document.getElementById('attitude'), attitudeText = attitude.querySelector('p');
+const eggSend = document.getElementById('egg-send');
+let eggTimers = [];
+function closeEgg() {
+  eggTimers.forEach(clearTimeout); eggTimers = [];
+  attitude.classList.remove('on', 'say', 'go');
+  attitude.setAttribute('aria-hidden', 'true');
+}
 document.getElementById('egg').addEventListener('click', () => {
   attitudeText.textContent = 'I like your attitude.';
   attitude.classList.add('on');
-  setTimeout(() => attitude.classList.add('say'), reduce ? 0 : 350);
-  // the message holds for a second, then off to WhatsApp
-  setTimeout(() => { location.href = waLink(RSVP.more); }, (reduce ? 0 : 350) + 1000 + 500);
+  attitude.removeAttribute('aria-hidden');
+  eggTimers.push(setTimeout(() => attitude.classList.add('say'), reduce ? 0 : 350));
+  // after a second, the send button appears: a real link tapped by the guest, so it opens
+  // WhatsApp (app on phones, new tab on desktop) exactly like Yes and No
+  eggTimers.push(setTimeout(() => { attitude.classList.add('go'); eggSend.focus({ preventScroll: true }); }, (reduce ? 0 : 350) + 1000));
 });
-// coming back from WhatsApp (back button / bfcache): clear the screen again
-addEventListener('pageshow', () => attitude.classList.remove('on', 'say'));
+eggSend.addEventListener('click', () => setTimeout(closeEgg, 300));
+// tap the empty screen or press Escape to back out
+attitude.addEventListener('click', e => { if (e.target === attitude) closeEgg(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && attitude.classList.contains('on')) { e.stopPropagation(); closeEgg(); }
+}, { capture: true });   // runs before the panel's own Escape, so only the egg closes
+addEventListener('pageshow', closeEgg);
 
 addEventListener('resize', setSources);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && state === 'intro' && intro.paused) intro.play().catch(() => {}); });
